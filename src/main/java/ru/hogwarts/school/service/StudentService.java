@@ -1,69 +1,57 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.StudentNotFoundException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
 
     final StudentRepository studentRepository;
 
-    private Long id = 0L;
-
-    HashMap<Long, Student> studentHashMap = new HashMap<>();
-
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
     public Student createStudent(Student student) {
-        student.setId(++id);
-        studentHashMap.put(id, student);
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student getStudent(Long id) {
-        if (!studentHashMap.containsKey(id)) {
-            throw new StudentNotFoundException("Студент не найден.");
+        if (studentRepository.findById(id).isEmpty()) {
+            throw new StudentNotFoundException("Студент не найден");
         }
-        return studentHashMap.get(id);
+        return studentRepository.findById(id).get();
     }
 
-    public Student editStudent(Long studentId, Student student) {
-        if (!studentHashMap.containsKey(studentId)) {
-            throw new StudentNotFoundException("Студент не найден.");
-        }
-        studentHashMap.put(studentId, student);
-        return student;
-    }
-
-    public Student deleteStudent(Long id) {
-        if (!studentHashMap.containsKey(id)) {
-            throw new StudentNotFoundException("Студент не найден.");
-        }
-        return studentHashMap.remove(id);
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
     }
 
     public List<Student> findByAge(int age) {
+        return new ArrayList<>(studentRepository.findByAge(age));
+    }
 
-        List<Student> studentList = new ArrayList<>();
-        for (Student s: studentHashMap.values()){
-            if (s.getAge() == age){
-                studentList.add(s);
-            }
-        }
-
-        return studentList;
+    public List<Student> findByAgeBetween(int minAge, int maxAge) {
+        return new ArrayList<>(studentRepository.findByAgeBetween(minAge, maxAge));
     }
 
     public List<Student> getAllStudents() {
-        return new ArrayList<>(studentHashMap.values());
+        return new ArrayList<>(studentRepository.findAll());
     }
+
+    public Faculty getFaculty(Long id) {
+        return studentRepository.findById(id).get().getFaculty();
+    }
+
+
+
+
+
 }

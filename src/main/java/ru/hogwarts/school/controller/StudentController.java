@@ -1,13 +1,16 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import javax.websocket.server.PathParam;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("student")
@@ -33,14 +36,18 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        Student editedStudent = studentService.editStudent(student.getId(), student);
+
+        Student editedStudent = studentService.createStudent(student);
+        if (editedStudent == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
         return ResponseEntity.ok(editedStudent);
     }
 
     @DeleteMapping("{studentId}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long studentId) {
-        Student deletedStudent = studentService.deleteStudent(studentId);
-        return ResponseEntity.ok(deletedStudent);
+    public void deleteStudent(@PathVariable Long studentId) {
+        studentService.deleteStudent(studentId);
     }
 
     @GetMapping("/findByAge")
@@ -52,8 +59,24 @@ public class StudentController {
 
     }
 
+    @GetMapping("/findBetween")
+    public ResponseEntity<Collection<Student>> getStudentByAge(@RequestParam("min") Integer minAge,
+                                                               @RequestParam("max") Integer maxAge) {
+        if (minAge > 0 && maxAge > 0) {
+            return ResponseEntity.ok(studentService.findByAgeBetween(minAge, maxAge));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
+
+    }
+
     @GetMapping("/getAll")
     public Collection<Student> getAllStudent() {
         return studentService.getAllStudents();
     }
+
+    @GetMapping("/{id}/faculty")
+    public Faculty findFaculty(@PathVariable("id") long id) {
+        return studentService.getFaculty(id);
+    }
+
 }
