@@ -10,7 +10,6 @@ import ru.hogwarts.school.service.StudentService;
 import javax.websocket.server.PathParam;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("student")
@@ -70,13 +69,13 @@ public class StudentController {
     }
 
     @GetMapping("/getAll")
-    public Collection<Student> getAllStudent() {
-        return studentService.getAllStudents();
+    public ResponseEntity<Collection<Student>> getAllStudent() {
+        return ResponseEntity.ok(studentService.getAllStudents());
     }
 
     @GetMapping("/{id}/faculty")
-    public Faculty findFaculty(@PathVariable("id") long id) {
-        return studentService.getFaculty(id);
+    public ResponseEntity<Faculty> findFaculty(@PathVariable("id") long id) {
+        return ResponseEntity.ok(studentService.getFaculty(id));
     }
 
 }

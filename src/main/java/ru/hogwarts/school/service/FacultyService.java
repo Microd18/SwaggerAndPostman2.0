@@ -27,7 +27,7 @@ public class FacultyService {
 
     public Faculty getFaculty(Long id) {
         if (facultyRepository.findById(id).isEmpty()){
-            throw new FacultyNotFoundException("Факульет не найден");
+            throw new FacultyNotFoundException();
         }
         return facultyRepository.findById(id).get();
     }

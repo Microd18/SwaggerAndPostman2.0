@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class StudentNotFoundException extends RuntimeException{
-    public StudentNotFoundException(String message) {
-        super(message);
+    public StudentNotFoundException() {
+        super("Студент не найден!");
     }
 }

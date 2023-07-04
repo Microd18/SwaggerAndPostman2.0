@@ -6,7 +6,6 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
-import javax.websocket.server.PathParam;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -59,14 +58,14 @@ public class FacultyController {
 
     }
 
-    @GetMapping("/find/{facultyId}")
-    public Collection<Faculty> getAllFaculties() {
-        return facultyService.getAllFaculties();
+    @GetMapping("/find")
+    public ResponseEntity<Collection<Faculty>> getAllFaculties() {
+        return ResponseEntity.ok(facultyService.getAllFaculties());
     }
 
     @GetMapping("/getAll/{facultyId}")
-    public Collection<Student> getStudents(@PathVariable Long facultyId) {
-        return facultyService.getStudents(facultyId);
+    public ResponseEntity<Collection<Student>> getStudents(@PathVariable Long facultyId) {
+        return ResponseEntity.ok(facultyService.getStudents(facultyId));
     }
 
 }

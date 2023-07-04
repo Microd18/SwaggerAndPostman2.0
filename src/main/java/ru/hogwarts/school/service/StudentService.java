@@ -25,7 +25,7 @@ public class StudentService {
 
     public Student getStudent(Long id) {
         if (studentRepository.findById(id).isEmpty()) {
-            throw new StudentNotFoundException("Студент не найден");
+            throw new StudentNotFoundException();
         }
         return studentRepository.findById(id).get();
     }
