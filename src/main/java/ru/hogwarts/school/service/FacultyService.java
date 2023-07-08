@@ -27,13 +27,15 @@ public class FacultyService {
 
     public Faculty getFaculty(Long id) {
         if (facultyRepository.findById(id).isEmpty()){
-            throw new FacultyNotFoundException();
+            throw new FacultyNotFoundException(id);
         }
         return facultyRepository.findById(id).get();
     }
 
     public void deleteFaculty(Long id) {
-        facultyRepository.deleteById(id);
+        Faculty faculty = facultyRepository.findById(id)
+                .orElseThrow(() -> new FacultyNotFoundException(id));
+        facultyRepository.delete(faculty);
     }
 
     public List<Faculty> findByColor(String color) {

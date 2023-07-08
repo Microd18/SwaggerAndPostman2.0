@@ -25,13 +25,15 @@ public class StudentService {
 
     public Student getStudent(Long id) {
         if (studentRepository.findById(id).isEmpty()) {
-            throw new StudentNotFoundException();
+            throw new StudentNotFoundException(id);
         }
         return studentRepository.findById(id).get();
     }
 
     public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        studentRepository.delete(student);
     }
 
     public List<Student> findByAge(int age) {
