@@ -1,19 +1,19 @@
 select *
-from students
+from student
 where age between 10 and 20;
 
 
 select name
-from students;
+from student;
 
 select *
-from students
+from student
 where name like '%О%';
 
 select *
-from students
+from student
 where age < id;
 
 select *
-from students
+from student
 order by age;
