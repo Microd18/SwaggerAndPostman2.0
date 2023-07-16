@@ -1,6 +1,6 @@
 package ru.hogwarts.school.exception;
 
-public class AvatarNotFoundException extends RuntimeException{
+public class AvatarNotFoundException extends RuntimeException {
 
     private final long id;
 
