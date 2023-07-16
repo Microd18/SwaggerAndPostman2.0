@@ -13,7 +13,7 @@ import java.util.Collections;
 @RequestMapping("faculty")
 public class FacultyController {
 
-    FacultyService facultyService;
+    private final FacultyService facultyService;
 
     public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
@@ -64,5 +64,4 @@ public class FacultyController {
     public ResponseEntity<Collection<Student>> getStudents(@PathVariable Long facultyId) {
         return ResponseEntity.ok(facultyService.getStudents(facultyId));
     }
-
 }

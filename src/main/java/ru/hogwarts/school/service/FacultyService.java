@@ -3,7 +3,6 @@ package ru.hogwarts.school.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -16,10 +15,9 @@ import java.util.List;
 @Service
 public class FacultyService {
 
-    Logger logger = LoggerFactory.getLogger(StudentController.class);
-
-    final FacultyRepository facultyRepository;
-    final StudentRepository studentRepository;
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
     public FacultyService(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
