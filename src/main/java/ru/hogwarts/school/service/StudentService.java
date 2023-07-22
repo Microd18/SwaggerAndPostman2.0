@@ -9,7 +9,9 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -84,6 +86,26 @@ public class StudentService {
         logger.info("Was invoked method for get last five students");
 
         return studentRepository.getLastFiveStudents();
+    }
+
+    public Collection<String> getByFirstLetter(String letter) {
+        logger.info("Was invoked method for get students by first letter");
+
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(name -> name.substring(0,1).equalsIgnoreCase(letter))
+                .sorted()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+    }
+
+    public Double getAverageAgeAllStudents() {
+        logger.info("Was invoked method for get average age of all students");
+
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
     }
 
 

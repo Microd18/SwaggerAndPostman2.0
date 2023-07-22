@@ -76,19 +76,29 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getFaculty(id));
     }
 
-    @GetMapping("/get-amount-of-students")
+    @GetMapping("/amount-of-students")
     public Integer getAmountOfStudents() {
         return studentService.getAmountStudents();
     }
 
-    @GetMapping("/get-average-age")
+    @GetMapping("/average-age")
     public Integer getAverageAgeOfStudents() {
         return studentService.getAverageAgeOfStudents();
     }
 
-    @GetMapping("/get-last-5")
+    @GetMapping("/last-5")
     public ResponseEntity<Collection<Student>> getLastFiveStudents() {
         return ResponseEntity.ok(studentService.getLastFiveStudents());
+    }
+
+    @GetMapping("/first-letter/{letter}")
+    public ResponseEntity<Collection<String>> getByFirstLetter(@PathVariable String letter) {
+        return ResponseEntity.ok(studentService.getByFirstLetter(letter));
+    }
+
+    @GetMapping("/average_age2")
+    public ResponseEntity<Double> getAverageAgeAllStudents() {
+        return ResponseEntity.ok(studentService.getAverageAgeAllStudents());
     }
 
 }

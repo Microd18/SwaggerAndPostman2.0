@@ -10,7 +10,9 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyService {
@@ -69,5 +71,37 @@ public class FacultyService {
         logger.info("Was invoked method for get students on faculty");
 
         return new ArrayList<>(studentRepository.findAllByFaculty_Id(facultyId));
+    }
+
+    public String getLongestNameOfFaculty() {
+        logger.info("Was invoked method for get longest name of faculty");
+
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length))
+                .orElseThrow();
+    }
+
+    public Integer getValueX() {
+        logger.info("Was invoked method for get valueX");
+
+        long start = System.currentTimeMillis();
+        int sum = Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, Integer::sum);
+        long finish = System.currentTimeMillis();
+        long elapsed = finish - start;
+        System.out.println("Время подсчета с помощью стрима, мс: " + elapsed + " " + sum);
+
+        long start2 = System.currentTimeMillis();
+        int sum2 = 0;
+        for (int i = 0; i <= 1_000_000; i++){
+            sum2 += i;
+        }
+        long finish2 = System.currentTimeMillis();
+        long elapsed2 = finish2 - start2;
+        System.out.println("Время подсчета с помощью цикла, мс: " + elapsed2 + " " + sum2);
+
+        return Math.max(sum, sum2);
     }
 }
